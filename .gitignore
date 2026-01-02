@@ -1,0 +1,39 @@
+venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.DS_Store
+*.swp
+*.swo
+*.log
+question_1_flask/venv/
+question_2_jupyter_pandas/venv/
+# Ignore ZIPs, archives, and binaries
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+
+# Ignore eksctl downloaded binaries
+eksctl
+eksctl.exe
+eksctl.zip
+
+# Ignore Kubernetes local config files
+.kube/
+*.kubeconfig
+
+# Ignore Docker build artifacts
+**/.dockerignore
+docker-compose.override.yml
+
+# Ignore Python cache and virtual environments (already included but reinforcing)
+**/__pycache__/
+**/*.pyc
+**/venv/
+
+# Ignore Jupyter Notebook checkpoints (already included but reinforcing)
+**/.ipynb_checkpoints/
+
+# Ignore OS-specific files
+Thumbs.db

@@ -1,0 +1,18 @@
+version: "3.9"
+
+services:
+  flask_app:
+    build: ./question_1_flask
+    container_name: flask_app
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./question_1_flask:/app
+
+  jupyter_app:
+    build: ./question_2_jupyter_pandas
+    container_name: jupyter_app
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./question_2_jupyter_pandas:/workspace

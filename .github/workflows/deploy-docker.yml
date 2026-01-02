@@ -1,0 +1,31 @@
+name: Build and Push Docker Images
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    - name: Build Flask image
+      run: docker build -t jeankoku/flask_app:v1 ./question_1_flask
+
+    - name: Build Jupyter image
+      run: docker build -t jeankoku/jupyter_app:v1 ./question_2_jupyter_pandas
+
+    - name: Push Flask image
+      run: docker push jeankoku/flask_app:v1
+
+    - name: Push Jupyter image
+      run: docker push jeankoku/jupyter_app:v1
