@@ -16,8 +16,8 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      id-token: write        # Required for OIDC
-      contents: read         # Required to checkout the repo
+      id-token: write
+      contents: read
 
     steps:
       # Step 1: Checkout repository
@@ -41,20 +41,24 @@ jobs:
         run: |
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/jupyter_app:${{ github.sha }}
 
-      # Step 5: Configure AWS credentials using OIDC
+      # Step 5: Configure AWS credentials using NEW OIDC ROLE
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/github-oidc-deploy-role
+          role-to-assume: arn:aws:iam::408433988572:role/github-oidc-eks-runtime-role
           role-session-name: github-actions
-          aws-region: ${{ secrets.AWS_REGION }}
+          aws-region: ca-central-1
 
-      # Step 6: Update kubeconfig for EKS
+      # Step 6: Verify AWS identity (CRITICAL TEST)
+      - name: Verify AWS identity
+        run: aws sts get-caller-identity
+
+      # Step 7: Update kubeconfig for EKS
       - name: Update kubeconfig
         run: |
           aws eks update-kubeconfig --region ${{ secrets.AWS_REGION }} --name ${{ secrets.EKS_CLUSTER_NAME }}
 
-      # Step 7: Deploy updated image to EKS
+      # Step 8: Deploy updated image to EKS
       - name: Deploy Jupyter to EKS
         run: |
           kubectl set image deployment/jupyter-app jupyter-app=${{ secrets.DOCKERHUB_USERNAME }}/jupyter_app:${{ github.sha }}
