@@ -16,8 +16,8 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      id-token: write
-      contents: read
+      id-token: write        # Required for OIDC
+      contents: read         # Required to checkout the repo
 
     steps:
       # Step 1: Checkout repository
